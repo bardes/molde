@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>molde</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>molde</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>molde</code></h1>
+<p>
+
+</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#parse">parse (template)</a></td>
+	<td class="summary">Parse a template, returning a table with the matched contents.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#compile">compile (template)</a></td>
+	<td class="summary">Compiles a table with contents to Lua code that generates the (hopefully)
+ desired result.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#load">load (template)</a></td>
+	<td class="summary">Compiles the template, returning a closure that executes the substitution</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#loadfile">loadfile (template_file)</a></td>
+	<td class="summary">Same as <a href="index.html#load">molde.load</a>, but loads the template from a file</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#string_bracket_level">string_bracket_level</a></td>
+	<td class="summary">Long string bracket level.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "parse"></a>
+    <strong>parse (template)</strong>
+    </dt>
+    <dd>
+    Parse a template, returning a table with the matched contents. </p>
+
+<p> The parser tags the contents as:</p>
+
+<ul>
+    <li>Literal: text that should be just copied to result</li>
+    <li>Value: a value to be substituted using Lua, usually a variable; it will be
+    stringified using <a href="https://www.lua.org/manual/5.3/manual.html#pdf-tostring">tostring</a></li>
+    <li>Statement: one or more Lua statements that will be copied directly into the
+    compiled function</li>
+</ul>
+
+<p> Results are in the format <code>{[&apos;literal&apos; | &apos;value&apos; | &apos;statement&apos;] = &lt;captured value&gt;}</code>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">template</span>
+         Template string to be parsed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Table with results
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+        <code>nil</code></li>
+        <li>
+        Parse error</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> results = molde.parse(<span class="string">[[literal {{ value }} {% statement %}]]</span>)
+<span class="comment">--[[
+-- results: {
+--     {literal = "literal "},
+--     {value = " value "},
+--     {literal = " "},
+--     {statement = " statement "}
+-- }
+--]]</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "compile"></a>
+    <strong>compile (template)</strong>
+    </dt>
+    <dd>
+    Compiles a table with contents to Lua code that generates the (hopefully)
+ desired result. </p>
+
+<p> The code generated for literals use Lua's long strings, with a default level
+ of 1. This level is taken from <a href="index.html#string_bracket_level">molde.string_bracket_level</a>, and can be changed
+ if your literal may contain the string <code>&quot;]=]&quot;</code>, for example.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">template</span>
+         Template string to be compiled
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Generated code string
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+        <code>nil</code></li>
+        <li>
+        Parse error</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "load"></a>
+    <strong>load (template)</strong>
+    </dt>
+    <dd>
+    Compiles the template, returning a closure that executes the substitution
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">template</span>
+
+
+
+        </li>
+    </ul>
+
+
+    <h3>Raises:</h3>
+    When resulting Lua code is not valid
+
+
+
+</dd>
+    <dt>
+    <a name = "loadfile"></a>
+    <strong>loadfile (template_file)</strong>
+    </dt>
+    <dd>
+    Same as <a href="index.html#load">molde.load</a>, but loads the template from a file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">template_file</span>
+
+
+
+        </li>
+    </ul>
+
+
+    <h3>Raises:</h3>
+    When file can't be opened, or resulting Lua code is not valid
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "string_bracket_level"></a>
+    <strong>string_bracket_level</strong>
+    </dt>
+    <dd>
+    Long string bracket level. </p>
+
+<p> It is used as <code>string.rep(&apos;=&apos;, molde.string_bracket_level)</code> to create the
+ necessary string delimiters for literals.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-02-18 20:40:40 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
