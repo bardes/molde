@@ -30,6 +30,7 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
 <li><a href="#Fields">Fields</a></li>
 </ul>
 
@@ -69,15 +70,31 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#load">load (template)</a></td>
-	<td class="summary">Compiles the template, returning a closure that executes the substitution</td>
+	<td class="summary">Compiles the template, returning a closure that executes the substitution.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#loadfile">loadfile (template_file)</a></td>
-	<td class="summary">Same as <a href="index.html#load">molde.load</a>, but loads the template from a file</td>
+	<td class="summary">Same as <a href="index.html#load">molde.load</a>, but loads the template from a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__process_template_function">__process_template_function ([env=_ENV])</a></td>
+	<td class="summary">This is the prototype of the function returned by <a href="index.html#load">molde.load</a> and
+ <a href="index.html#loadfile">molde.loadfile</a>.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#errors">errors</a></td>
+	<td class="summary">Parse errors that can occur in a template</td>
 	</tr>
 </table>
 <h2><a href="#Fields">Fields</a></h2>
 <table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#VERSION">VERSION</a></td>
+	<td class="summary">Module version 0.1.0</td>
+	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#string_bracket_level">string_bracket_level</a></td>
 	<td class="summary">Long string bracket level.</td>
@@ -170,7 +187,8 @@
     <h3>Returns:</h3>
     <ol>
 
-        Generated code string
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+        Generated code
     </ol>
      <h3>Or</h3>
     <ol>
@@ -189,23 +207,39 @@
     <strong>load (template)</strong>
     </dt>
     <dd>
-    Compiles the template, returning a closure that executes the substitution
+    Compiles the template, returning a closure that executes the substitution. </p>
+
+<p> The returned function behaves as described in <a href="index.html#__process_template_function">__process_template_function</a>.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">template</span>
-
-
-
+         Template string
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
 
-    <h3>Raises:</h3>
-    When resulting Lua code is not valid
+           <span class="types"><span class="type">function</span></span>
+        Template processor
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+        <code>nil</code></li>
+        <li>
+        Parse error</li>
+    </ol>
 
 
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">hello_template = molde.<span class="global">load</span>(<span class="string">[[Hello {{ name or "world" }}]]</span>)
+<span class="global">print</span>(hello_template()) <span class="comment">-- "Hello world"</span></pre>
+    </ul>
 
 </dd>
     <dt>
@@ -213,21 +247,114 @@
     <strong>loadfile (template_file)</strong>
     </dt>
     <dd>
-    Same as <a href="index.html#load">molde.load</a>, but loads the template from a file
+    Same as <a href="index.html#load">molde.load</a>, but loads the template from a file. </p>
+
+<p> Every caveat for <a href="index.html#load">molde.load</a> applies.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">template_file</span>
+         Template file path
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        Template processor
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+        <code>nil</code></li>
+        <li>
+        File open error</li>
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+        <code>nil</code></li>
+        <li>
+        Parse error</li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#load">molde.load</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">hello_template = molde.<span class="global">loadfile</span>(<span class="string">"hello_template_file"</span>)
+<span class="global">print</span>(hello_template()) <span class="comment">-- "Hello world"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "__process_template_function"></a>
+    <strong>__process_template_function ([env=_ENV])</strong>
+    </dt>
+    <dd>
+    This is the prototype of the function returned by <a href="index.html#load">molde.load</a> and
+ <a href="index.html#loadfile">molde.loadfile</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">env</span>
+         The used environment
+         (<em>default</em> _ENV)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+        Processed template
+    </ol>
+
+    <h3>Raises:</h3>
+    When the generated code is invalid
 
 
 
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "errors"></a>
+    <strong>errors</strong>
+    </dt>
+    <dd>
+    Parse errors that can occur in a template
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">PegError</span>
+        When PEG can't parse
+        </li>
+        <li><span class="parameter">ClosingValueError</span>
+        There is no closing <code>&quot;}}&quot;</code> to a value
+        </li>
+        <li><span class="parameter">ClosingStatementError</span>
+        There is no closing <code>&quot;%}&quot;</code> to a statement
+        </li>
+        <li><span class="parameter">EmptyValueError</span>
+        There is no content after value opening <code>&quot;{{&quot;</code>
+        </li>
+        <li><span class="parameter">EmptyStatementError</span>
+        There is no content after statement opening <code>&quot;{%&quot;</code>
         </li>
     </ul>
 
 
-    <h3>Raises:</h3>
-    When file can't be opened, or resulting Lua code is not valid
 
 
 
@@ -236,6 +363,20 @@
     <h2 class="section-header "><a name="Fields"></a>Fields</h2>
 
     <dl class="function">
+    <dt>
+    <a name = "VERSION"></a>
+    <strong>VERSION</strong>
+    </dt>
+    <dd>
+    Module version 0.1.0
+
+
+
+
+
+
+
+</dd>
     <dt>
     <a name = "string_bracket_level"></a>
     <strong>string_bracket_level</strong>
@@ -260,7 +401,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-02-18 20:40:40 </i>
+<i style="float:right;">Last updated 2017-02-19 22:32:29 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
